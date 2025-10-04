@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Calculadora OINP — Foreign Worker Stream (EOI) — Tabla oficial</title>
+  <style>
+    body{font-family:Arial, Helvetica, sans-serif;max-width:960px;margin:20px auto;padding:14px;color:#111}
+    h1{font-size:1.4rem;margin-bottom:4px}
+    label{display:block;margin:8px 0 4px;font-weight:600}
+    input,select,button{padding:8px;border:1px solid #bbb;border-radius:6px;width:100%;box-sizing:border-box;font-size:14px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .card{padding:14px;border-radius:8px;background:#f9f9f9;border:1px solid #eee;margin-bottom:12px}
+    pre{background:#fff;padding:10px;border-radius:6px;border:1px solid #eee;white-space:pre-wrap}
+    .result{background:#eaf8ef;border:1px solid #cfead5;padding:10px;border-radius:6px}
+    .error{color:#b00020;font-size:13px;margin-top:6px}
+    .small{font-size:13px;color:#666}
+    .section-title{font-size:1.05rem;margin-top:12px}
+  </style>
+</head>
+<body>
+  <h1>Calculadora OINP — Employer Job Offer: Foreign Worker Stream</h1>
+  <p class="small">Formulario basado en las tablas oficiales que enviaste (Job offer — TEER, occupational category, wage; work permit; job tenure; earnings history; language; regionalization). Los puntos siguen exactamente las tablas mostradas en las imágenes.</p>
+
+  <div class="card">
+    <h3 class="section-title">Employment / labour market factors (Oferta de trabajo)</h3>
+
+    <label for="teer">Job offer: NOC TEER category *</label>
+    <select id="teer">
+      <option value="">-- Selecciona --</option>
+      <option value="10">TEER 0 or 1 — 10 puntos</option>
+      <option value="8">TEER 2 or 3 — 8 puntos</option>
+      <option value="0">TEER 4 — 0 puntos</option>
+      <option value="0">TEER 5 — 0 puntos</option>
+    </select>
+
+    <label for="occCat">Job offer: NOC broad occupational category *</label>
+    <select id="occCat">
+      <option value="">-- Selecciona --</option>
+      <option value="10">Occupational category 0,2,3 — 10 puntos</option>
+      <option value="7">Occupational category 7 — 7 puntos</option>
+      <option value="5">Occupational category 1,9 — 5 puntos</option>
+      <option value="4">Occupational category 4,8 — 4 puntos</option>
+      <option value="3">Occupational category 5,6 — 3 puntos</option>
+    </select>
+
+    <label for="wage">Job offer: wage (por hora, CAD) *</label>
+    <select id="wage">
+      <option value="">-- Selecciona --</option>
+      <option value="10">$40 per hour or higher — 10 puntos</option>
+      <option value="8">$35 to $39.99 per hour — 8 puntos</option>
+      <option value="7">$30 to $34.99 per hour — 7 puntos</option>
+      <option value="6">$25 to $29.99 per hour — 6 puntos</option>
+      <option value="5">$20 to $24.99 per hour — 5 puntos</option>
+      <option value="0">Less than $20 per hour — 0 puntos</option>
+    </select>
+
+    <h3 class="section-title">Permiso y relación con el empleador</h3>
+    <label for="workPermit">Work permit status *</label>
+    <select id="workPermit">
+      <option value="">-- Selecciona --</option>
+      <option value="10">With valid work permit — 10 puntos</option>
+      <option value="0">Without valid work permit — 0 puntos</option>
+    </select>
+
+    <label for="tenure">Job tenure with job-offer employer *</label>
+    <select id="tenure">
+      <option value="">-- Selecciona --</option>
+      <option value="3">6 months or more working in job-offer position — 3 puntos</option>
+      <option value="0">Less than 6 months or not currently working in position — 0 puntos</option>
+    </select>
+
+    <h3 class="section-title">Canadian work experience</h3>
+    <label for="earnings">Canadian work experience: earnings history (último 5 años, CRA NOD) *</label>
+    <select id="earnings">
+      <option value="">-- Selecciona --</option>
+      <option value="3">$40k or more earnings in a year — 3 puntos</option>
+      <option value="0">Less than $40k earnings in a year — 0 puntos</option>
+    </select>
+
+    <h3 class="section-title">Language</h3>
+    <label for="clbOverall">Official language ability (usar CLB) *</label>
+    <select id="clbOverall">
+      <option value="">-- Selecciona --</option>
+      <option value="10">CLB 9 or higher — 10 puntos</option>
+      <option value="6">CLB 8 — 6 puntos</option>
+      <option value="4">CLB 7 — 4 puntos</option>
+      <option value="0">CLB 6 or lower — 0 puntos</option>
+    </select>
+
+    <label for="langKnown">Knowledge of official languages *</label>
+    <select id="langKnown">
+      <option value="">-- Selecciona --</option>
+      <option value="10">2 Official Languages — 10 puntos</option>
+      <option value="5">1 Official Language — 5 puntos</option>
+    </select>
+
+    <h3 class="section-title">Regionalization</h3>
+    <label for="region">Regional immigration: location of job offer *</label>
+    <select id="region">
+      <option value="">-- Selecciona --</option>
+      <option value="10">Northern Ontario — 10 puntos</option>
+      <option value="8">Other areas outside GTA (except Northern Ontario) — 8 puntos</option>
+      <option value="3">Inside GTA (except Toronto) — 3 puntos</option>
+      <option value="0">Toronto — 0 puntos</option>
+    </select>
+
+    <div style="margin-top:12px;display:flex;gap:8px">
+      <button id="calc" type="button">Calcular puntaje</button>
+      <button id="reset" type="button">Limpiar</button>
+    </div>
+
+    <p class="small" style="margin-top:10px">Campos marcados son obligatorios. Esta calculadora aplica exactamente los puntajes mostrados en las imágenes que adjuntaste.</p>
+  </div>
+
+  <div id="output" class="card" style="display:none">
+    <h3>Resultado</h3>
+    <div id="summary" class="result"></div>
+    <h4>Desglose</h4>
+    <pre id="breakdown"></pre>
+    <p class="small">Fuente: tablas oficiales del OINP provistas por el usuario. Revisa ontario.ca para confirmar reglas y elegibilidad final.</p>
+    <a id="download" style="display:inline-block;margin-top:10px"></a>
+  </div>
+
+  <div class="card">
+    <h4>Fuentes (imágenes provistas por el usuario / ontario.ca)</h4>
+    <ul>
+      <li><a href="https://www.ontario.ca/page/oinp-employer-job-offer-foreign-worker-stream" target="_blank">OINP — Employer Job Offer: Foreign Worker stream (ontario.ca)</a></li>
+    </ul>
+  </div>
+
+  <script>
+    function validateSelect(id) {
+      var el = document.getElementById(id);
+      if (!el.value) {
+        el.style.borderColor = '#b00020';
+        return false;
+      } else {
+        el.style.borderColor = '#bbb';
+        return true;
+      }
+    }
+
+    document.getElementById('calc').addEventListener('click', function() {
+      // validar todos
+      var fields = ['teer','occCat','wage','workPermit','tenure','earnings','clbOverall','langKnown','region'];
+      var ok = true;
+      fields.forEach(function(f){ if(!validateSelect(f)) ok = false; });
+      if (!ok) { alert('Por favor completa todos los campos obligatorios.'); return; }
+
+      // leer y convertir a enteros
+      var teer = Number(document.getElementById('teer').value);
+      var occ = Number(document.getElementById('occCat').value);
+      var wage = Number(document.getElementById('wage').value);
+      var workPermit = Number(document.getElementById('workPermit').value);
+      var tenure = Number(document.getElementById('tenure').value);
+      var earnings = Number(document.getElementById('earnings').value);
+      var clb = Number(document.getElementById('clbOverall').value);
+      var langKnown = Number(document.getElementById('langKnown').value);
+      var region = Number(document.getElementById('region').value);
+
+      var total = teer + occ + wage + workPermit + tenure + earnings + clb + langKnown + region;
+
+      document.getElementById('output').style.display = 'block';
+      document.getElementById('summary').innerHTML = '<strong>Puntaje total estimado: ' + total + ' puntos</strong>';
+
+      var breakdown = '';
+      breakdown += 'Job offer — NOC TEER category: ' + teer + ' pts\n';
+      breakdown += 'Job offer — NOC broad occupational category: ' + occ + ' pts\n';
+      breakdown += 'Job offer — wage: ' + wage + ' pts\n';
+      breakdown += 'Work permit status: ' + workPermit + ' pts\n';
+      breakdown += 'Job tenure with job-offer employer: ' + tenure + ' pts\n';
+      breakdown += 'Canadian work experience — earnings history: ' + earnings + ' pts\n';
+      breakdown += 'Language — Official ability (CLB): ' + clb + ' pts\n';
+      breakdown += 'Language — Knowledge of official languages: ' + langKnown + ' pts\n';
+      breakdown += 'Regionalization — location of job: ' + region + ' pts\n\n';
+      breakdown += 'TOTAL (estimado): ' + total + ' puntos\n\n';
+
+      document.getElementById('breakdown').textContent = breakdown;
+
+      // generar JSON descargable con inputs y resultado
+      var result = {
+        total: total,
+        details: {
+          teer: teer, occ: occ, wage: wage, workPermit: workPermit,
+          tenure: tenure, earnings: earnings, clb: clb, langKnown: langKnown, region: region
+        },
+        timestamp: new Date().toISOString()
+      };
+      var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(result, null, 2));
+      var dl = document.getElementById('download');
+      dl.href = dataStr;
+      dl.download = 'oinp_result.json';
+      dl.textContent = 'Descargar resultado (JSON)';
+      dl.style.display = 'inline-block';
+    });
+
+    document.getElementById('reset').addEventListener('click', function() {
+      var selects = document.querySelectorAll('select');
+      selects.forEach(function(s){ s.value = ''; s.style.borderColor = '#bbb'; });
+      document.getElementById('output').style.display = 'none';
+      document.getElementById('breakdown').textContent = '';
+      document.getElementById('summary').textContent = '';
+      var dl = document.getElementById('download'); dl.style.display = 'none'; dl.href='';
+    });
+  </script>
+</body>
+</html>
