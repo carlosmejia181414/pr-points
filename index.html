@@ -11,31 +11,36 @@
     input,select,button{padding:8px;border:1px solid #bbb;border-radius:6px;width:100%;box-sizing:border-box;font-size:14px}
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .card{padding:14px;border-radius:8px;background:#f9f9f9;border:1px solid #eee;margin-bottom:12px}
-    pre{background:#fff;padding:10px;border-radius:6px;border:1px solid #eee;white-space:pre-wrap}
-    .result{background:#eaf8ef;border:1px solid #cfead5;padding:10px;border-radius:6px}
-    .error{color:#b00020;font-size:13px;margin-top:6px}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{border:1px solid #ccc;padding:8px;text-align:left}
+    th{background:#f1f1f1}
+    .result{background:#eaf8ef;border:1px solid #cfead5;padding:10px;border-radius:6px;margin-top:10px}
     .small{font-size:13px;color:#666}
-    .section-title{font-size:1.05rem;margin-top:12px}
+    .help{font-size:13px;color:#444;margin-top:6px;background:#fff;padding:8px;border-radius:6px;border:1px solid #eee}
+    button{cursor:pointer}
   </style>
 </head>
 <body>
   <h1>Calculadora OINP — Employer Job Offer: Foreign Worker Stream</h1>
-  <p class="small">Formulario basado en las tablas oficiales que enviaste (Job offer — TEER, occupational category, wage; work permit; job tenure; earnings history; language; regionalization). Los puntos siguen exactamente las tablas mostradas en las imágenes.</p>
+  <p class="small">Formulario basado en las tablas oficiales del OINP. Calcula tu puntaje estimado para el stream “Foreign Worker”.</p>
 
   <div class="card">
-    <h3 class="section-title">Employment / labour market factors (Oferta de trabajo)</h3>
+    <h3>Employment / labour market factors (Oferta de trabajo)</h3>
 
     <label for="teer">Job offer: NOC TEER category *</label>
-    <select id="teer">
+    <select id="teer" aria-describedby="help-teer">
       <option value="">-- Selecciona --</option>
       <option value="10">TEER 0 or 1 — 10 puntos</option>
       <option value="8">TEER 2 or 3 — 8 puntos</option>
       <option value="0">TEER 4 — 0 puntos</option>
       <option value="0">TEER 5 — 0 puntos</option>
     </select>
+    <div id="help-teer" class="help">
+      <strong>Descripción:</strong> TEER 0 y 1 incluyen ocupaciones gerenciales y profesionales de alto nivel (por ejemplo, gerentes y profesionales altamente calificados). Estas posiciones suelen requerir educación avanzada y experiencia significativa; por eso reciben la máxima puntuación. TEER 2/3 son ocupaciones técnicas o especializadas con formación postsecundaria o certificaciones. TEER 4 y 5 corresponden a niveles técnicos o elementales y no suman puntos en este criterio.
+    </div>
 
     <label for="occCat">Job offer: NOC broad occupational category *</label>
-    <select id="occCat">
+    <select id="occCat" aria-describedby="help-occ">
       <option value="">-- Selecciona --</option>
       <option value="10">Occupational category 0,2,3 — 10 puntos</option>
       <option value="7">Occupational category 7 — 7 puntos</option>
@@ -43,9 +48,12 @@
       <option value="4">Occupational category 4,8 — 4 puntos</option>
       <option value="3">Occupational category 5,6 — 3 puntos</option>
     </select>
+    <div id="help-occ" class="help">
+      <strong>Descripción:</strong> Las categorías 0,2,3 incluyen puestos de gestión, profesionales y del sector salud/ciencias; reciben la puntuación máxima. Otras categorías (7, 1/9, 4/8, 5/6) reflejan distintos niveles de prioridad económica y reciben puntuaciones decrecientes según su importancia y requerimientos de habilidad.
+    </div>
 
     <label for="wage">Job offer: wage (por hora, CAD) *</label>
-    <select id="wage">
+    <select id="wage" aria-describedby="help-wage">
       <option value="">-- Selecciona --</option>
       <option value="10">$40 per hour or higher — 10 puntos</option>
       <option value="8">$35 to $39.99 per hour — 8 puntos</option>
@@ -54,154 +62,153 @@
       <option value="5">$20 to $24.99 per hour — 5 puntos</option>
       <option value="0">Less than $20 per hour — 0 puntos</option>
     </select>
+    <div id="help-wage" class="help">
+      <strong>Descripción:</strong> El salario por hora refleja la competitividad de la oferta. Salarios más altos ($40+/h) indican mayor prioridad económica y reciben más puntos. Rangos intermedios reciben puntuación proporcional; salarios por debajo de $20/h no suman puntos.
+    </div>
 
-    <h3 class="section-title">Permiso y relación con el empleador</h3>
+    <h3>Permiso y relación con el empleador</h3>
     <label for="workPermit">Work permit status *</label>
-    <select id="workPermit">
+    <select id="workPermit" aria-describedby="help-permit">
       <option value="">-- Selecciona --</option>
       <option value="10">With valid work permit — 10 puntos</option>
       <option value="0">Without valid work permit — 0 puntos</option>
     </select>
+    <div id="help-permit" class="help">
+      <strong>Descripción:</strong> Indica si el candidato posee actualmente un permiso de trabajo válido en Canadá (y normalmente en Ontario). Tener un permiso vigente demuestra elegibilidad inmediata y suma puntos.
+    </div>
 
     <label for="tenure">Job tenure with job-offer employer *</label>
-    <select id="tenure">
+    <select id="tenure" aria-describedby="help-tenure">
       <option value="">-- Selecciona --</option>
       <option value="3">6 months or more working in job-offer position — 3 puntos</option>
       <option value="0">Less than 6 months or not currently working in position — 0 puntos</option>
     </select>
+    <div id="help-tenure" class="help">
+      <strong>Descripción:</strong> Mide la continuidad del trabajador con el empleador que ofrece el puesto. 6 meses o más en la posición demuestra estabilidad y suma puntos.
+    </div>
 
-    <h3 class="section-title">Canadian work experience</h3>
-    <label for="earnings">Canadian work experience: earnings history (último 5 años, CRA NOD) *</label>
-    <select id="earnings">
+    <h3>Canadian work experience</h3>
+    <label for="earnings">Canadian work experience: earnings history (último 5 años) *</label>
+    <select id="earnings" aria-describedby="help-earn">
       <option value="">-- Selecciona --</option>
       <option value="3">$40k or more earnings in a year — 3 puntos</option>
-      <option value="0">Less than $40k earnings in a year — 0 puntos</option>
+      <option value="0">Less than $40k — 0 puntos</option>
     </select>
+    <div id="help-earn" class="help">
+      <strong>Descripción:</strong> Se refiere a ingresos reportados (por ejemplo, Notices of Assessment del CRA). Ganar $40,000 CAD o más en al menos un año de los últimos cinco suele otorgar puntos por capacidad económica y estabilidad.
+    </div>
 
-    <h3 class="section-title">Language</h3>
+    <h3>Language</h3>
     <label for="clbOverall">Official language ability (usar CLB) *</label>
-    <select id="clbOverall">
+    <select id="clbOverall" aria-describedby="help-clb">
       <option value="">-- Selecciona --</option>
       <option value="10">CLB 9 or higher — 10 puntos</option>
       <option value="6">CLB 8 — 6 puntos</option>
       <option value="4">CLB 7 — 4 puntos</option>
       <option value="0">CLB 6 or lower — 0 puntos</option>
     </select>
+    <div id="help-clb" class="help">
+      <strong>Descripción:</strong> Evalúa la habilidad en el idioma oficial (inglés o francés) usando el Canadian Language Benchmark (CLB). Niveles más altos (CLB 9+) indican competencia avanzada y reciben más puntos.
+    </div>
 
     <label for="langKnown">Knowledge of official languages *</label>
-    <select id="langKnown">
+    <select id="langKnown" aria-describedby="help-langKnown">
       <option value="">-- Selecciona --</option>
       <option value="10">2 Official Languages — 10 puntos</option>
       <option value="5">1 Official Language — 5 puntos</option>
     </select>
+    <div id="help-langKnown" class="help">
+      <strong>Descripción:</strong> Indica si el candidato domina ambos idiomas oficiales (inglés y francés) o solo uno. Dominar ambos otorga ventaja para integración laboral y comunitaria.
+    </div>
 
-    <h3 class="section-title">Regionalization</h3>
+    <h3>Regionalization</h3>
     <label for="region">Regional immigration: location of job offer *</label>
-    <select id="region">
+    <select id="region" aria-describedby="help-region">
       <option value="">-- Selecciona --</option>
       <option value="10">Northern Ontario — 10 puntos</option>
-      <option value="8">Other areas outside GTA (except Northern Ontario) — 8 puntos</option>
+      <option value="8">Outside GTA (except Northern Ontario) — 8 puntos</option>
       <option value="3">Inside GTA (except Toronto) — 3 puntos</option>
       <option value="0">Toronto — 0 puntos</option>
     </select>
+    <div id="help-region" class="help">
+      <strong>Descripción:</strong> La ubicación del empleo afecta puntos por regionalización. Zonas con mayor necesidad de población (como el norte de Ontario) reciben más puntos para incentivar la inmigración fuera de los centros urbanos como Toronto.
+    </div>
 
     <div style="margin-top:12px;display:flex;gap:8px">
       <button id="calc" type="button">Calcular puntaje</button>
       <button id="reset" type="button">Limpiar</button>
     </div>
-
-    <p class="small" style="margin-top:10px">Campos marcados son obligatorios. Esta calculadora aplica exactamente los puntajes mostrados en las imágenes que adjuntaste.</p>
+    <p class="small" style="margin-top:10px">Campos marcados son obligatorios. Esta calculadora aplica exactamente los puntajes mostrados en las tablas oficiales.</p>
   </div>
 
   <div id="output" class="card" style="display:none">
     <h3>Resultado</h3>
-    <div id="summary" class="result"></div>
-    <h4>Desglose</h4>
-    <pre id="breakdown"></pre>
-    <p class="small">Fuente: tablas oficiales del OINP provistas por el usuario. Revisa ontario.ca para confirmar reglas y elegibilidad final.</p>
-    <a id="download" style="display:inline-block;margin-top:10px"></a>
+    <div id="summary" class="result" aria-live="polite"></div>
+    <table id="resultTable" aria-live="polite"></table>
+    <button id="downloadPDF" style="margin-top:10px;display:none;">Descargar resultado (PDF)</button>
   </div>
 
-  <div class="card">
-    <h4>Fuentes (imágenes provistas por el usuario / ontario.ca)</h4>
-    <ul>
-      <li><a href="https://www.ontario.ca/page/oinp-employer-job-offer-foreign-worker-stream" target="_blank">OINP — Employer Job Offer: Foreign Worker stream (ontario.ca)</a></li>
-    </ul>
-  </div>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
+    const { jsPDF } = window.jspdf;
+
     function validateSelect(id) {
-      var el = document.getElementById(id);
-      if (!el.value) {
-        el.style.borderColor = '#b00020';
-        return false;
-      } else {
-        el.style.borderColor = '#bbb';
-        return true;
-      }
+      const el = document.getElementById(id);
+      if (!el.value) { el.style.borderColor = '#b00020'; return false; }
+      else { el.style.borderColor = '#bbb'; return true; }
     }
 
     document.getElementById('calc').addEventListener('click', function() {
-      // validar todos
-      var fields = ['teer','occCat','wage','workPermit','tenure','earnings','clbOverall','langKnown','region'];
-      var ok = true;
-      fields.forEach(function(f){ if(!validateSelect(f)) ok = false; });
-      if (!ok) { alert('Por favor completa todos los campos obligatorios.'); return; }
+      const fields = ['teer','occCat','wage','workPermit','tenure','earnings','clbOverall','langKnown','region'];
+      let ok = true;
+      fields.forEach(f => { if(!validateSelect(f)) ok = false; });
+      if (!ok) { alert('Por favor completa todos los campos.'); return; }
 
-      // leer y convertir a enteros
-      var teer = Number(document.getElementById('teer').value);
-      var occ = Number(document.getElementById('occCat').value);
-      var wage = Number(document.getElementById('wage').value);
-      var workPermit = Number(document.getElementById('workPermit').value);
-      var tenure = Number(document.getElementById('tenure').value);
-      var earnings = Number(document.getElementById('earnings').value);
-      var clb = Number(document.getElementById('clbOverall').value);
-      var langKnown = Number(document.getElementById('langKnown').value);
-      var region = Number(document.getElementById('region').value);
-
-      var total = teer + occ + wage + workPermit + tenure + earnings + clb + langKnown + region;
+      const values = fields.map(f => Number(document.getElementById(f).value));
+      const total = values.reduce((a,b)=>a+b,0);
 
       document.getElementById('output').style.display = 'block';
       document.getElementById('summary').innerHTML = '<strong>Puntaje total estimado: ' + total + ' puntos</strong>';
 
-      var breakdown = '';
-      breakdown += 'Job offer — NOC TEER category: ' + teer + ' pts\n';
-      breakdown += 'Job offer — NOC broad occupational category: ' + occ + ' pts\n';
-      breakdown += 'Job offer — wage: ' + wage + ' pts\n';
-      breakdown += 'Work permit status: ' + workPermit + ' pts\n';
-      breakdown += 'Job tenure with job-offer employer: ' + tenure + ' pts\n';
-      breakdown += 'Canadian work experience — earnings history: ' + earnings + ' pts\n';
-      breakdown += 'Language — Official ability (CLB): ' + clb + ' pts\n';
-      breakdown += 'Language — Knowledge of official languages: ' + langKnown + ' pts\n';
-      breakdown += 'Regionalization — location of job: ' + region + ' pts\n\n';
-      breakdown += 'TOTAL (estimado): ' + total + ' puntos\n\n';
+      const labels = [
+        'Job offer — TEER category','Occupational category','Wage','Work permit',
+        'Job tenure','Earnings history','Language (CLB)','Official languages','Region'
+      ];
 
-      document.getElementById('breakdown').textContent = breakdown;
+      let html = '<tr><th>Factor</th><th>Puntos</th></tr>';
+      labels.forEach((label,i)=> html += `<tr><td>${label}</td><td>${values[i]}</td></tr>`);
+      html += `<tr><th>Total</th><th>${total}</th></tr>`;
+      document.getElementById('resultTable').innerHTML = html;
 
-      // generar JSON descargable con inputs y resultado
-      var result = {
-        total: total,
-        details: {
-          teer: teer, occ: occ, wage: wage, workPermit: workPermit,
-          tenure: tenure, earnings: earnings, clb: clb, langKnown: langKnown, region: region
-        },
-        timestamp: new Date().toISOString()
+      const timestamp = new Date();
+      const timestampStr = timestamp.toLocaleString();
+
+      const pdfBtn = document.getElementById('downloadPDF');
+      pdfBtn.style.display = 'inline-block';
+      pdfBtn.onclick = () => {
+        const doc = new jsPDF();
+        doc.setFontSize(12);
+        doc.text("Resultado — OINP Foreign Worker Stream", 10, 12);
+        doc.setFontSize(10);
+        doc.text("Fecha / Hora: " + timestampStr, 10, 22);
+        doc.text("Puntaje total: " + total + " puntos", 10, 30);
+        let y = 40;
+        labels.forEach((label,i)=> {
+          const line = `${label}: ${values[i]} puntos`;
+          doc.text(line, 10, y);
+          y += 7;
+          if (y > 275) { doc.addPage(); y = 20; }
+        });
+        doc.save("oinp_resultado.pdf");
       };
-      var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(result, null, 2));
-      var dl = document.getElementById('download');
-      dl.href = dataStr;
-      dl.download = 'oinp_result.json';
-      dl.textContent = 'Descargar resultado (JSON)';
-      dl.style.display = 'inline-block';
     });
 
     document.getElementById('reset').addEventListener('click', function() {
-      var selects = document.querySelectorAll('select');
-      selects.forEach(function(s){ s.value = ''; s.style.borderColor = '#bbb'; });
+      document.querySelectorAll('select').forEach(s => { s.value = ''; s.style.borderColor='#bbb'; });
       document.getElementById('output').style.display = 'none';
-      document.getElementById('breakdown').textContent = '';
-      document.getElementById('summary').textContent = '';
-      var dl = document.getElementById('download'); dl.style.display = 'none'; dl.href='';
+      document.getElementById('downloadPDF').style.display = 'none';
+      document.getElementById('resultTable').innerHTML = '';
+      document.getElementById('summary').innerHTML = '';
     });
   </script>
 </body>
