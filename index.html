@@ -391,6 +391,15 @@
       color: var(--primary);
     }
 
+    @media print {
+      body { background: white; }
+      .hero, .section, .result { box-shadow: none; }
+      .actions, form .section, .footer-note { display: none !important; }
+      .result { display: block !important; border: 1px solid #aaa; }
+      .container { width: 100%; margin: 0; }
+      a { color: inherit; text-decoration: none; }
+    }
+
     @media (max-width: 760px) {
       .container { width: min(100% - 20px, 1120px); margin-top: 14px; }
       .hero, .section { padding: 19px; border-radius: 14px; }
@@ -409,14 +418,64 @@
     <header class="hero">
       <h1>Calculadora de Puntaje OINP</h1>
       <p>
-        Selecciona una opción en cada factor para obtener una estimación de tu puntaje
-        en el sistema de expresión de interés del OINP.
+        Selecciona la opción que corresponda a tu oferta laboral, experiencia,
+        educación, idioma y ubicación del trabajo. La herramienta calcula tus puntos,
+        el porcentaje alcanzado y el desglose por cada área.
       </p>
       <div class="notice">
-        Esta herramienta fue elaborada con los valores mostrados en la imagen proporcionada.
-        Es informativa y no reemplaza la revisión de las reglas oficiales vigentes del Gobierno de Ontario.
+        <strong>Validada con la página oficial del Gobierno de Ontario:</strong>
+        esta calculadora utiliza los factores de puntuación publicados para el
+        <em>Ontario Workforce Priority Stream</em>. El puntaje máximo disponible es
+        <strong>130 puntos</strong>. La puntuación de una expresión de interés no garantiza
+        una invitación ni reemplaza los requisitos de elegibilidad del programa.
+        <br><br>
+        <a href="https://www.ontario.ca/page/ontario-workforce-priority-stream#section-5"
+           target="_blank" rel="noopener noreferrer"
+           style="color:white;font-weight:800;">
+          Consultar criterios oficiales de Ontario
+        </a>
       </div>
     </header>
+
+
+    <section class="section" style="border-left:6px solid var(--accent);">
+      <div class="section-header">
+        <div class="section-number">i</div>
+        <h2>Antes de calcular tu puntaje</h2>
+      </div>
+      <div class="fields">
+        <div class="field">
+          <label>Puntaje máximo</label>
+          <div class="description" style="min-height:auto;">
+            La suma máxima de los factores incluidos es <strong>130 puntos</strong>:
+            empleo y mercado laboral 70, educación 20, idioma 25 y regionalización 15.
+          </div>
+        </div>
+        <div class="field">
+          <label>Puntaje versus elegibilidad</label>
+          <div class="description" style="min-height:auto;">
+            Obtener puntos no significa automáticamente que cumples el programa.
+            También debes satisfacer todos los requisitos del pathway, de la oferta,
+            del empleador, del salario, de la experiencia, del idioma y de la educación.
+          </div>
+        </div>
+        <div class="field">
+          <label>Documentos de respaldo</label>
+          <div class="description" style="min-height:auto;">
+            Si recibes una invitación, Ontario puede solicitar pruebas de cada respuesta:
+            permiso de trabajo, oferta, cartas laborales, nóminas, documentos fiscales,
+            resultados de idioma, credenciales y ECA.
+          </div>
+        </div>
+        <div class="field">
+          <label>No existe un puntaje mínimo permanente</label>
+          <div class="description" style="min-height:auto;">
+            El puntaje requerido puede variar entre rondas de invitación y según las
+            ocupaciones o prioridades seleccionadas por Ontario.
+          </div>
+        </div>
+      </div>
+    </section>
 
     <form id="oinpForm">
       <section class="section">
@@ -429,7 +488,9 @@
           <div class="field">
             <label for="teer">Categoría NOC TEER</label>
             <div class="description">
-              Clasificación del nivel de capacitación, educación, experiencia y responsabilidades de la ocupación ofrecida.
+              Selecciona el TEER correspondiente al código NOC de la oferta laboral.
+              Este dato normalmente se determina a partir del código NOC y no solamente
+              del título del puesto. TEER significa Training, Education, Experience and Responsibilities.
             </div>
             <select id="teer" data-label="Categoría NOC TEER">
               <option value="9">TEER 0 o 1 — 9 puntos</option>
@@ -441,7 +502,9 @@
           <div class="field">
             <label for="nocBroad">Categoría ocupacional amplia del NOC</label>
             <div class="description">
-              Corresponde al primer dígito de tu código NOC y representa el grupo ocupacional general.
+              Se determina con el primer dígito del código NOC de cinco dígitos.
+              Por ejemplo, un NOC que comienza con 3 pertenece a la categoría ocupacional amplia 3.
+              Verifica el código oficial de la ocupación y que las funciones principales coincidan con tu trabajo.
             </div>
             <select id="nocBroad" data-label="Categoría ocupacional amplia NOC">
               <option value="10">Categoría 3 — 10 puntos</option>
@@ -455,7 +518,9 @@
           <div class="field">
             <label for="salary">Salario por hora de la oferta laboral</label>
             <div class="description">
-              Usa el salario base por hora indicado en la oferta de empleo, sin incluir bonos u otros pagos variables.
+              Utiliza el salario base por hora incluido en la oferta laboral aprobada.
+              No sumes horas extra, propinas, bonos, comisiones, pago de vacaciones ni otros beneficios.
+              El salario también debe cumplir el requisito salarial aplicable a la ocupación y región.
             </div>
             <select id="salary" data-label="Salario por hora">
               <option value="15">$40 o más — 15 puntos</option>
@@ -470,7 +535,9 @@
           <div class="field">
             <label for="ontarioExperience">Experiencia laboral en Ontario</label>
             <div class="description">
-              Tiempo trabajado en Ontario en el puesto de la oferta laboral, o como médico autorizado que trabaja por cuenta propia.
+              Selecciona cuánto tiempo has trabajado dentro de Ontario en la misma posición
+              de la oferta y con el empleador que presenta la oferta. El tiempo debe poder demostrarse
+              con documentos como cartas laborales, contratos, comprobantes de pago y registros fiscales.
             </div>
             <select id="ontarioExperience" data-label="Experiencia laboral en Ontario">
               <option value="18">&gt; 24 meses — 18 puntos</option>
@@ -483,7 +550,8 @@
           <div class="field full conditional" id="totalOntarioWrap">
             <label for="totalOntario">Experiencia laboral total en Ontario</label>
             <div class="description">
-              Solo se usa cuando tienes menos de seis meses en el puesto específico de la oferta laboral.
+              Esta pregunta aparece únicamente cuando tienes menos de seis meses en la posición de la oferta.
+              Selecciona tu experiencia laboral total acumulada en Ontario según los rangos oficiales.
             </div>
             <select id="totalOntario" data-label="Experiencia total en Ontario">
               <option value="12">&gt; 24 meses — 12 puntos</option>
@@ -496,7 +564,9 @@
           <div class="field">
             <label for="canadaIncome">Historial de ingresos en Canadá</label>
             <div class="description">
-              Ingresos laborales acumulados en Canadá durante los últimos cinco años, según los rangos indicados.
+              Selecciona el rango correspondiente a tus ingresos laborales en Canadá durante el período indicado.
+              Conserva tus Notices of Assessment de la Canada Revenue Agency y otros documentos fiscales,
+              ya que Ontario puede solicitar evidencia para respaldar los puntos declarados.
             </div>
             <select id="canadaIncome" data-label="Historial de ingresos en Canadá">
               <option value="8">$70,000 o más — 8 puntos</option>
@@ -509,7 +579,9 @@
           <div class="field">
             <label for="legalStatus">Estatus legal en Canadá</label>
             <div class="description">
-              Documento migratorio válido que te autoriza actualmente a trabajar o estudiar en Canadá.
+              Selecciona “permiso de trabajo válido” solamente cuando tu permiso confiere estatus legal
+              y autorización para trabajar en Canadá. Un permiso vencido no debe seleccionarse como válido,
+              salvo que las reglas oficiales permitan acreditar maintained status con los documentos requeridos.
             </div>
             <select id="legalStatus" data-label="Estatus legal en Canadá">
               <option value="10">Permiso de trabajo válido — 10 puntos</option>
@@ -530,7 +602,10 @@
           <div class="field">
             <label for="education">Nivel más alto de educación</label>
             <div class="description">
-              Selecciona tu credencial académica más alta. Para estudios extranjeros puede requerirse una evaluación ECA.
+              Selecciona únicamente la credencial completada más alta que puedas demostrar.
+              Las credenciales obtenidas fuera de Canadá generalmente deben estar respaldadas por una
+              Educational Credential Assessment (ECA) válida, cuando el programa la exija.
+              Estudios incompletos no equivalen automáticamente a una credencial terminada.
             </div>
             <select id="education" data-label="Nivel más alto de educación">
               <option value="10">Doctorado o profesión regulada indicada — 10 puntos</option>
@@ -548,7 +623,9 @@
           <div class="field">
             <label for="canadianCredentials">Credenciales educativas canadienses</label>
             <div class="description">
-              Credenciales postsecundarias elegibles obtenidas en Canadá, con al menos un año de estudios a tiempo completo.
+              Cuenta credenciales postsecundarias canadienses elegibles de programas de por lo menos
+              un año académico de estudios a tiempo completo. No marques una credencial solamente por haber
+              estudiado en Canadá; debes haber completado y recibido la credencial elegible.
             </div>
             <select id="canadianCredentials" data-label="Credenciales educativas canadienses">
               <option value="10">Más de una credencial — 10 puntos</option>
@@ -569,7 +646,9 @@
           <div class="field">
             <label for="languageLevel">Nivel en idioma oficial</label>
             <div class="description">
-              Nivel CLB equivalente obtenido en una prueba aceptada de inglés o francés.
+              Usa el Canadian Language Benchmark equivalente de una prueba de idioma aceptada y vigente.
+              Para esta calculadora debes usar el nivel aplicable conforme a las instrucciones oficiales;
+              revisa las cuatro habilidades y no uses resultados académicos o pruebas no aceptadas.
             </div>
             <select id="languageLevel" data-label="Nivel de idioma oficial">
               <option value="15">CLB 9 o superior — 15 puntos</option>
@@ -583,7 +662,9 @@
           <div class="field">
             <label for="officialLanguages">Conocimiento de idiomas oficiales</label>
             <div class="description">
-              Para recibir puntos por dos idiomas, se requiere al menos CLB 6 en las cuatro habilidades de ambas pruebas.
+              Selecciona dos idiomas oficiales solo si tienes resultados válidos de inglés y francés
+              y alcanzas al menos CLB 6 en cada una de las cuatro habilidades de ambos idiomas.
+              Tener conocimientos informales del segundo idioma no es suficiente para recibir los puntos.
             </div>
             <select id="officialLanguages" data-label="Conocimiento de idiomas oficiales">
               <option value="10">Dos idiomas oficiales — 10 puntos</option>
@@ -604,7 +685,9 @@
           <div class="field full">
             <label for="region">Lugar de trabajo o práctica</label>
             <div class="description">
-              Selecciona la región de Ontario donde se encuentra físicamente el lugar de trabajo correspondiente a la oferta.
+              Selecciona la ubicación física donde realizarás principalmente el trabajo de la oferta.
+              No uses la dirección de tu vivienda, la oficina central de la empresa ni una dirección postal
+              si el trabajo se realiza normalmente en otra región. Ottawa se encuentra en Eastern Ontario.
             </div>
             <select id="region" data-label="Regionalización">
               <option value="15">Norte de Ontario — 15 puntos</option>
@@ -621,6 +704,7 @@
       <div class="actions">
         <button type="button" class="calculate" id="calculateBtn">Calcular mi puntaje</button>
         <button type="reset" class="reset">Restablecer</button>
+        <button type="button" class="reset" id="printBtn">Imprimir resultado</button>
       </div>
     </form>
 
@@ -673,10 +757,19 @@
 
       <h3 class="breakdown-title">Desglose detallado</h3>
       <div class="breakdown" id="breakdown"></div>
+
+      <div style="margin-top:20px;padding:14px 16px;border-radius:12px;background:#fff8df;border:1px solid #ecd27b;color:#594813;">
+        <strong>Interpretación:</strong> el porcentaje compara tu resultado con el máximo matemático
+        de esta calculadora. No representa una probabilidad de aprobación y no debe compararse con
+        una ronda de invitación sin revisar la fecha, el pathway, las ocupaciones seleccionadas y
+        las condiciones específicas de esa ronda.
+      </div>
     </section>
 
     <p class="footer-note">
-      Verifica siempre los criterios, requisitos y rondas de invitación directamente con fuentes oficiales antes de presentar una solicitud.
+      Calculadora informativa actualizada el 2026-07-22.
+      Verifica los criterios y cualquier cambio directamente en Ontario.ca antes de registrar
+      una expresión de interés o presentar una solicitud.
     </p>
   </main>
 
@@ -706,18 +799,18 @@
 
     function getCompetitivenessLevel(percentage) {
       if (percentage >= 80) {
-        return { text: "Excelente puntuación", color: "#247a42", background: "#e6f5eb" };
+        return { text: "Porcentaje alto de los puntos disponibles", color: "#247a42", background: "#e6f5eb" };
       }
       if (percentage >= 68) {
-        return { text: "Puntuación muy alta", color: "#185f91", background: "#e6f2fb" };
+        return { text: "Buen porcentaje de los puntos disponibles", color: "#185f91", background: "#e6f2fb" };
       }
       if (percentage >= 55) {
-        return { text: "Puntuación intermedia", color: "#8a6500", background: "#fff5cf" };
+        return { text: "Porcentaje intermedio", color: "#8a6500", background: "#fff5cf" };
       }
       if (percentage >= 40) {
-        return { text: "Puntuación con oportunidades de mejora", color: "#a45116", background: "#fff0e5" };
+        return { text: "Hay varias oportunidades de mejora", color: "#a45116", background: "#fff0e5" };
       }
-      return { text: "Puntuación por fortalecer", color: "#9a352d", background: "#fdebea" };
+      return { text: "Perfil con factores por fortalecer", color: "#9a352d", background: "#fdebea" };
     }
 
     function calculateScore() {
@@ -848,6 +941,8 @@
         document.getElementById("scoreDonut").style.setProperty("--progress", "0deg");
       }, 0);
     });
+
+    document.getElementById("printBtn").addEventListener("click", () => window.print());
 
     toggleOntarioExperience();
   </script>
