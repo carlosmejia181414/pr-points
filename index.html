@@ -1,215 +1,855 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Calculadora OINP — Foreign Worker Stream (EOI) — Tabla oficial</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de Puntaje OINP</title>
   <style>
-    body{font-family:Arial, Helvetica, sans-serif;max-width:960px;margin:20px auto;padding:14px;color:#111}
-    h1{font-size:1.4rem;margin-bottom:4px}
-    label{display:block;margin:8px 0 4px;font-weight:600}
-    input,select,button{padding:8px;border:1px solid #bbb;border-radius:6px;width:100%;box-sizing:border-box;font-size:14px}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .card{padding:14px;border-radius:8px;background:#f9f9f9;border:1px solid #eee;margin-bottom:12px}
-    table{width:100%;border-collapse:collapse;margin-top:10px}
-    th,td{border:1px solid #ccc;padding:8px;text-align:left}
-    th{background:#f1f1f1}
-    .result{background:#eaf8ef;border:1px solid #cfead5;padding:10px;border-radius:6px;margin-top:10px}
-    .small{font-size:13px;color:#666}
-    .help{font-size:13px;color:#444;margin-top:6px;background:#fff;padding:8px;border-radius:6px;border:1px solid #eee}
-    button{cursor:pointer}
+    :root {
+      --primary: #123f7a;
+      --primary-light: #eaf2ff;
+      --secondary: #2f7d4a;
+      --accent: #f2b705;
+      --danger: #a33a2b;
+      --text: #1f2937;
+      --muted: #5f6b7a;
+      --border: #d7dee8;
+      --surface: #ffffff;
+      --background: #f4f7fb;
+      --shadow: 0 10px 30px rgba(18, 63, 122, 0.10);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 32px));
+      margin: 32px auto;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #123f7a, #2466ad);
+      color: white;
+      padding: 34px;
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 800px;
+      opacity: 0.94;
+    }
+
+    .notice {
+      margin-top: 18px;
+      padding: 13px 15px;
+      border-left: 4px solid var(--accent);
+      background: rgba(255, 255, 255, 0.13);
+      border-radius: 8px;
+      font-size: 0.94rem;
+    }
+
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      margin-bottom: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 15px;
+      margin-bottom: 18px;
+      border-bottom: 2px solid var(--primary-light);
+    }
+
+    .section-number {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      font-weight: 800;
+      flex: 0 0 auto;
+    }
+
+    .section h2 {
+      margin: 0;
+      color: var(--primary);
+      font-size: 1.35rem;
+    }
+
+    .fields {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      font-weight: 750;
+      color: #25364c;
+    }
+
+    .description {
+      color: var(--muted);
+      font-size: 0.9rem;
+      min-height: 42px;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px 13px;
+      border: 1px solid #bcc8d7;
+      border-radius: 10px;
+      background: white;
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(18, 63, 122, 0.12);
+    }
+
+    .conditional {
+      display: none;
+      padding: 14px;
+      border: 1px dashed #90a6bf;
+      border-radius: 12px;
+      background: #f8fbff;
+    }
+
+    .actions {
+      position: sticky;
+      bottom: 12px;
+      z-index: 10;
+      display: flex;
+      gap: 12px;
+      align-items: stretch;
+      margin-top: 26px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 14px 22px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+
+    .calculate {
+      flex: 1;
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 8px 22px rgba(18, 63, 122, 0.22);
+    }
+
+    .reset {
+      background: #e7edf5;
+      color: #29415f;
+    }
+
+    .result {
+      display: none;
+      margin-top: 24px;
+      background: linear-gradient(135deg, #eff8f2, #ffffff);
+      border: 2px solid #79b98e;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .score {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: auto;
+      background: white;
+      border: 12px solid var(--secondary);
+      color: var(--secondary);
+      text-align: center;
+    }
+
+    .score strong {
+      display: block;
+      font-size: 2.5rem;
+      line-height: 1;
+    }
+
+    .score span {
+      display: block;
+      font-size: 0.85rem;
+      margin-top: 7px;
+      font-weight: 700;
+    }
+
+    .breakdown {
+      display: grid;
+      gap: 8px;
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 9px 0;
+      border-bottom: 1px solid #e1e7ec;
+    }
+
+    .breakdown-row:last-child { border-bottom: 0; }
+
+    .footer-note {
+      margin: 22px 4px 40px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      text-align: center;
+    }
+
+
+    .score-dashboard {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .donut {
+      --progress: 0deg;
+      --score-color: var(--secondary);
+      width: 210px;
+      height: 210px;
+      margin: auto;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background:
+        conic-gradient(var(--score-color) var(--progress), #dfe7ef 0deg);
+      position: relative;
+      transition: background 0.6s ease;
+    }
+
+    .donut::before {
+      content: "";
+      position: absolute;
+      width: 158px;
+      height: 158px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: inset 0 0 0 1px #e4eaf0;
+    }
+
+    .donut-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .donut-content strong {
+      display: block;
+      font-size: 2.55rem;
+      line-height: 1;
+      color: var(--score-color);
+    }
+
+    .donut-content .of-total {
+      display: block;
+      margin-top: 6px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #41536a;
+    }
+
+    .donut-content .percentage {
+      display: block;
+      margin-top: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .result-summary h2 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      color: var(--primary);
+    }
+
+    .score-message {
+      margin: 0 0 16px;
+      color: var(--muted);
+    }
+
+    .level-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      background: #eaf6ee;
+      color: #24683c;
+    }
+
+    .progress-track {
+      height: 18px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #dfe7ef;
+      margin-bottom: 8px;
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--secondary);
+      transition: width 0.7s ease;
+    }
+
+    .progress-caption {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .area-summary {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 22px 0;
+    }
+
+    .area-card {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #f8fafc;
+    }
+
+    .area-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .area-card strong {
+      display: block;
+      margin-top: 4px;
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+
+    .breakdown-title {
+      margin: 24px 0 8px;
+      color: var(--primary);
+    }
+
+    @media (max-width: 760px) {
+      .container { width: min(100% - 20px, 1120px); margin-top: 14px; }
+      .hero, .section { padding: 19px; border-radius: 14px; }
+      .fields { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .result-grid { grid-template-columns: 1fr; }
+      .score-dashboard { grid-template-columns: 1fr; }
+      .area-summary { grid-template-columns: 1fr; }
+      .actions { position: static; flex-direction: column; }
+      .description { min-height: auto; }
+    }
   </style>
 </head>
 <body>
-  <h1>Calculadora OINP — Employer Job Offer: Foreign Worker Stream</h1>
-  <p class="small">Formulario basado en las tablas oficiales del OINP. Calcula tu puntaje estimado para el stream “Foreign Worker”.</p>
+  <main class="container">
+    <header class="hero">
+      <h1>Calculadora de Puntaje OINP</h1>
+      <p>
+        Selecciona una opción en cada factor para obtener una estimación de tu puntaje
+        en el sistema de expresión de interés del OINP.
+      </p>
+      <div class="notice">
+        Esta herramienta fue elaborada con los valores mostrados en la imagen proporcionada.
+        Es informativa y no reemplaza la revisión de las reglas oficiales vigentes del Gobierno de Ontario.
+      </div>
+    </header>
 
-  <div class="card">
-    <h3>Employment / labour market factors (Oferta de trabajo)</h3>
+    <form id="oinpForm">
+      <section class="section">
+        <div class="section-header">
+          <div class="section-number">1</div>
+          <h2>Factores del empleo y mercado laboral</h2>
+        </div>
 
-    <label for="teer">Job offer: NOC TEER category *</label>
-    <select id="teer" aria-describedby="help-teer">
-      <option value="">-- Selecciona --</option>
-      <option value="10">TEER 0 or 1 — 10 puntos</option>
-      <option value="8">TEER 2 or 3 — 8 puntos</option>
-      <option value="0">TEER 4 — 0 puntos</option>
-      <option value="0">TEER 5 — 0 puntos</option>
-    </select>
-    <div id="help-teer" class="help">
-      <strong>Descripción:</strong> TEER 0 y 1 incluyen ocupaciones gerenciales y profesionales de alto nivel (por ejemplo, gerentes y profesionales altamente calificados). Estas posiciones suelen requerir educación avanzada y experiencia significativa; por eso reciben la máxima puntuación. TEER 2/3 son ocupaciones técnicas o especializadas con formación postsecundaria o certificaciones. TEER 4 y 5 corresponden a niveles técnicos o elementales y no suman puntos en este criterio.
-    </div>
+        <div class="fields">
+          <div class="field">
+            <label for="teer">Categoría NOC TEER</label>
+            <div class="description">
+              Clasificación del nivel de capacitación, educación, experiencia y responsabilidades de la ocupación ofrecida.
+            </div>
+            <select id="teer" data-label="Categoría NOC TEER">
+              <option value="9">TEER 0 o 1 — 9 puntos</option>
+              <option value="6">TEER 2 o 3 — 6 puntos</option>
+              <option value="0">TEER 4 o 5 — 0 puntos</option>
+            </select>
+          </div>
 
-    <label for="occCat">Job offer: NOC broad occupational category *</label>
-    <select id="occCat" aria-describedby="help-occ">
-      <option value="">-- Selecciona --</option>
-      <option value="10">Occupational category 0,2,3 — 10 puntos</option>
-      <option value="7">Occupational category 7 — 7 puntos</option>
-      <option value="5">Occupational category 1,9 — 5 puntos</option>
-      <option value="4">Occupational category 4,8 — 4 puntos</option>
-      <option value="3">Occupational category 5,6 — 3 puntos</option>
-    </select>
-    <div id="help-occ" class="help">
-      <strong>Descripción:</strong> Las categorías 0,2,3 incluyen puestos de gestión, profesionales y del sector salud/ciencias; reciben la puntuación máxima. Otras categorías (7, 1/9, 4/8, 5/6) reflejan distintos niveles de prioridad económica y reciben puntuaciones decrecientes según su importancia y requerimientos de habilidad.
-    </div>
+          <div class="field">
+            <label for="nocBroad">Categoría ocupacional amplia del NOC</label>
+            <div class="description">
+              Corresponde al primer dígito de tu código NOC y representa el grupo ocupacional general.
+            </div>
+            <select id="nocBroad" data-label="Categoría ocupacional amplia NOC">
+              <option value="10">Categoría 3 — 10 puntos</option>
+              <option value="8">Categoría 7 — 8 puntos</option>
+              <option value="6">Categoría 2 — 6 puntos</option>
+              <option value="4">Categorías 0, 1, 4, 8 o 9 — 4 puntos</option>
+              <option value="2">Categorías 5 o 6 — 2 puntos</option>
+            </select>
+          </div>
 
-    <label for="wage">Job offer: wage (por hora, CAD) *</label>
-    <select id="wage" aria-describedby="help-wage">
-      <option value="">-- Selecciona --</option>
-      <option value="10">$40 per hour or higher — 10 puntos</option>
-      <option value="8">$35 to $39.99 per hour — 8 puntos</option>
-      <option value="7">$30 to $34.99 per hour — 7 puntos</option>
-      <option value="6">$25 to $29.99 per hour — 6 puntos</option>
-      <option value="5">$20 to $24.99 per hour — 5 puntos</option>
-      <option value="0">Less than $20 per hour — 0 puntos</option>
-    </select>
-    <div id="help-wage" class="help">
-      <strong>Descripción:</strong> El salario por hora refleja la competitividad de la oferta. Salarios más altos ($40+/h) indican mayor prioridad económica y reciben más puntos. Rangos intermedios reciben puntuación proporcional; salarios por debajo de $20/h no suman puntos.
-    </div>
+          <div class="field">
+            <label for="salary">Salario por hora de la oferta laboral</label>
+            <div class="description">
+              Usa el salario base por hora indicado en la oferta de empleo, sin incluir bonos u otros pagos variables.
+            </div>
+            <select id="salary" data-label="Salario por hora">
+              <option value="15">$40 o más — 15 puntos</option>
+              <option value="12">$35 a $39.99 — 12 puntos</option>
+              <option value="10">$30 a $34.99 — 10 puntos</option>
+              <option value="8">$25 a $29.99 — 8 puntos</option>
+              <option value="5">$20 a $24.99 — 5 puntos</option>
+              <option value="0">Menos de $20 — 0 puntos</option>
+            </select>
+          </div>
 
-    <h3>Permiso y relación con el empleador</h3>
-    <label for="workPermit">Work permit status *</label>
-    <select id="workPermit" aria-describedby="help-permit">
-      <option value="">-- Selecciona --</option>
-      <option value="10">With valid work permit — 10 puntos</option>
-      <option value="0">Without valid work permit — 0 puntos</option>
-    </select>
-    <div id="help-permit" class="help">
-      <strong>Descripción:</strong> Indica si el candidato posee actualmente un permiso de trabajo válido en Canadá (y normalmente en Ontario). Tener un permiso vigente demuestra elegibilidad inmediata y suma puntos.
-    </div>
+          <div class="field">
+            <label for="ontarioExperience">Experiencia laboral en Ontario</label>
+            <div class="description">
+              Tiempo trabajado en Ontario en el puesto de la oferta laboral, o como médico autorizado que trabaja por cuenta propia.
+            </div>
+            <select id="ontarioExperience" data-label="Experiencia laboral en Ontario">
+              <option value="18">&gt; 24 meses — 18 puntos</option>
+              <option value="15">13 a 24 meses — 15 puntos</option>
+              <option value="12">6 a 12 meses — 12 puntos</option>
+              <option value="0" data-less-six="true">&lt; 6 meses — revisar experiencia total</option>
+            </select>
+          </div>
 
-    <label for="tenure">Job tenure with job-offer employer *</label>
-    <select id="tenure" aria-describedby="help-tenure">
-      <option value="">-- Selecciona --</option>
-      <option value="3">6 months or more working in job-offer position — 3 puntos</option>
-      <option value="0">Less than 6 months or not currently working in position — 0 puntos</option>
-    </select>
-    <div id="help-tenure" class="help">
-      <strong>Descripción:</strong> Mide la continuidad del trabajador con el empleador que ofrece el puesto. 6 meses o más en la posición demuestra estabilidad y suma puntos.
-    </div>
+          <div class="field full conditional" id="totalOntarioWrap">
+            <label for="totalOntario">Experiencia laboral total en Ontario</label>
+            <div class="description">
+              Solo se usa cuando tienes menos de seis meses en el puesto específico de la oferta laboral.
+            </div>
+            <select id="totalOntario" data-label="Experiencia total en Ontario">
+              <option value="12">&gt; 24 meses — 12 puntos</option>
+              <option value="9">13 a 24 meses — 9 puntos</option>
+              <option value="6">6 a 12 meses — 6 puntos</option>
+              <option value="0">&lt; 6 meses — 0 puntos</option>
+            </select>
+          </div>
 
-    <h3>Canadian work experience</h3>
-    <label for="earnings">Canadian work experience: earnings history (último 5 años) *</label>
-    <select id="earnings" aria-describedby="help-earn">
-      <option value="">-- Selecciona --</option>
-      <option value="3">$40k or more earnings in a year — 3 puntos</option>
-      <option value="0">Less than $40k — 0 puntos</option>
-    </select>
-    <div id="help-earn" class="help">
-      <strong>Descripción:</strong> Se refiere a ingresos reportados (por ejemplo, Notices of Assessment del CRA). Ganar $40,000 CAD o más en al menos un año de los últimos cinco suele otorgar puntos por capacidad económica y estabilidad.
-    </div>
+          <div class="field">
+            <label for="canadaIncome">Historial de ingresos en Canadá</label>
+            <div class="description">
+              Ingresos laborales acumulados en Canadá durante los últimos cinco años, según los rangos indicados.
+            </div>
+            <select id="canadaIncome" data-label="Historial de ingresos en Canadá">
+              <option value="8">$70,000 o más — 8 puntos</option>
+              <option value="6">$50,000 a $69,999 — 6 puntos</option>
+              <option value="4">$30,000 a $49,999 — 4 puntos</option>
+              <option value="0">Menos de $30,000 — 0 puntos</option>
+            </select>
+          </div>
 
-    <h3>Language</h3>
-    <label for="clbOverall">Official language ability (usar CLB) *</label>
-    <select id="clbOverall" aria-describedby="help-clb">
-      <option value="">-- Selecciona --</option>
-      <option value="10">CLB 9 or higher — 10 puntos</option>
-      <option value="6">CLB 8 — 6 puntos</option>
-      <option value="4">CLB 7 — 4 puntos</option>
-      <option value="0">CLB 6 or lower — 0 puntos</option>
-    </select>
-    <div id="help-clb" class="help">
-      <strong>Descripción:</strong> Evalúa la habilidad en el idioma oficial (inglés o francés) usando el Canadian Language Benchmark (CLB). Niveles más altos (CLB 9+) indican competencia avanzada y reciben más puntos.
-    </div>
+          <div class="field">
+            <label for="legalStatus">Estatus legal en Canadá</label>
+            <div class="description">
+              Documento migratorio válido que te autoriza actualmente a trabajar o estudiar en Canadá.
+            </div>
+            <select id="legalStatus" data-label="Estatus legal en Canadá">
+              <option value="10">Permiso de trabajo válido — 10 puntos</option>
+              <option value="5">Permiso de estudio válido — 5 puntos</option>
+              <option value="0">Sin permiso válido — 0 puntos</option>
+            </select>
+          </div>
+        </div>
+      </section>
 
-    <label for="langKnown">Knowledge of official languages *</label>
-    <select id="langKnown" aria-describedby="help-langKnown">
-      <option value="">-- Selecciona --</option>
-      <option value="10">2 Official Languages — 10 puntos</option>
-      <option value="5">1 Official Language — 5 puntos</option>
-    </select>
-    <div id="help-langKnown" class="help">
-      <strong>Descripción:</strong> Indica si el candidato domina ambos idiomas oficiales (inglés y francés) o solo uno. Dominar ambos otorga ventaja para integración laboral y comunitaria.
-    </div>
+      <section class="section">
+        <div class="section-header">
+          <div class="section-number">2</div>
+          <h2>Educación</h2>
+        </div>
 
-    <h3>Regionalization</h3>
-    <label for="region">Regional immigration: location of job offer *</label>
-    <select id="region" aria-describedby="help-region">
-      <option value="">-- Selecciona --</option>
-      <option value="10">Northern Ontario — 10 puntos</option>
-      <option value="8">Outside GTA (except Northern Ontario) — 8 puntos</option>
-      <option value="3">Inside GTA (except Toronto) — 3 puntos</option>
-      <option value="0">Toronto — 0 puntos</option>
-    </select>
-    <div id="help-region" class="help">
-      <strong>Descripción:</strong> La ubicación del empleo afecta puntos por regionalización. Zonas con mayor necesidad de población (como el norte de Ontario) reciben más puntos para incentivar la inmigración fuera de los centros urbanos como Toronto.
-    </div>
+        <div class="fields">
+          <div class="field">
+            <label for="education">Nivel más alto de educación</label>
+            <div class="description">
+              Selecciona tu credencial académica más alta. Para estudios extranjeros puede requerirse una evaluación ECA.
+            </div>
+            <select id="education" data-label="Nivel más alto de educación">
+              <option value="10">Doctorado o profesión regulada indicada — 10 puntos</option>
+              <option value="8">Maestría — 8 puntos</option>
+              <option value="6">Certificado o diploma universitario por encima de licenciatura — 6 puntos</option>
+              <option value="6">Licenciatura o equivalente — 6 puntos</option>
+              <option value="5">Certificado de posgrado de un college de Ontario — 5 puntos</option>
+              <option value="5">Certificado o diploma universitario por debajo de licenciatura — 5 puntos</option>
+              <option value="5">College, CEGEP u otra credencial no universitaria — 5 puntos</option>
+              <option value="5">Aprendizaje u oficio — 5 puntos</option>
+              <option value="0">Menos que certificado, diploma de college u oficio — 0 puntos</option>
+            </select>
+          </div>
 
-    <div style="margin-top:12px;display:flex;gap:8px">
-      <button id="calc" type="button">Calcular puntaje</button>
-      <button id="reset" type="button">Limpiar</button>
-    </div>
-    <p class="small" style="margin-top:10px">Campos marcados son obligatorios. Esta calculadora aplica exactamente los puntajes mostrados en las tablas oficiales.</p>
-  </div>
+          <div class="field">
+            <label for="canadianCredentials">Credenciales educativas canadienses</label>
+            <div class="description">
+              Credenciales postsecundarias elegibles obtenidas en Canadá, con al menos un año de estudios a tiempo completo.
+            </div>
+            <select id="canadianCredentials" data-label="Credenciales educativas canadienses">
+              <option value="10">Más de una credencial — 10 puntos</option>
+              <option value="5">Una credencial — 5 puntos</option>
+              <option value="0">Sin credencial canadiense — 0 puntos</option>
+            </select>
+          </div>
+        </div>
+      </section>
 
-  <div id="output" class="card" style="display:none">
-    <h3>Resultado</h3>
-    <div id="summary" class="result" aria-live="polite"></div>
-    <table id="resultTable" aria-live="polite"></table>
-    <button id="downloadPDF" style="margin-top:10px;display:none;">Descargar resultado (PDF)</button>
-  </div>
+      <section class="section">
+        <div class="section-header">
+          <div class="section-number">3</div>
+          <h2>Idioma</h2>
+        </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <div class="fields">
+          <div class="field">
+            <label for="languageLevel">Nivel en idioma oficial</label>
+            <div class="description">
+              Nivel CLB equivalente obtenido en una prueba aceptada de inglés o francés.
+            </div>
+            <select id="languageLevel" data-label="Nivel de idioma oficial">
+              <option value="15">CLB 9 o superior — 15 puntos</option>
+              <option value="12">CLB 8 — 12 puntos</option>
+              <option value="8">CLB 7 — 8 puntos</option>
+              <option value="4">CLB 6 — 4 puntos</option>
+              <option value="0">CLB 5 o inferior — 0 puntos</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="officialLanguages">Conocimiento de idiomas oficiales</label>
+            <div class="description">
+              Para recibir puntos por dos idiomas, se requiere al menos CLB 6 en las cuatro habilidades de ambas pruebas.
+            </div>
+            <select id="officialLanguages" data-label="Conocimiento de idiomas oficiales">
+              <option value="10">Dos idiomas oficiales — 10 puntos</option>
+              <option value="5">Un idioma oficial — 5 puntos</option>
+              <option value="0">Ninguno — 0 puntos</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <div class="section-number">4</div>
+          <h2>Regionalización del lugar de trabajo</h2>
+        </div>
+
+        <div class="fields">
+          <div class="field full">
+            <label for="region">Lugar de trabajo o práctica</label>
+            <div class="description">
+              Selecciona la región de Ontario donde se encuentra físicamente el lugar de trabajo correspondiente a la oferta.
+            </div>
+            <select id="region" data-label="Regionalización">
+              <option value="15">Norte de Ontario — 15 puntos</option>
+              <option value="10">Este de Ontario — 10 puntos</option>
+              <option value="10">Centro de Ontario, fuera del GTA — 10 puntos</option>
+              <option value="10">Suroeste de Ontario — 10 puntos</option>
+              <option value="5">GTA, excepto Toronto — 5 puntos</option>
+              <option value="0">Toronto — 0 puntos</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button type="button" class="calculate" id="calculateBtn">Calcular mi puntaje</button>
+        <button type="reset" class="reset">Restablecer</button>
+      </div>
+    </form>
+
+    <section class="result" id="result" aria-live="polite">
+      <div class="score-dashboard">
+        <div class="donut" id="scoreDonut">
+          <div class="donut-content">
+            <strong id="totalScore">0</strong>
+            <span class="of-total">de <span id="maximumScore">130</span> puntos</span>
+            <span class="percentage" id="scorePercentage">0%</span>
+          </div>
+        </div>
+
+        <div class="result-summary">
+          <h2>Tu puntaje OINP estimado</h2>
+          <p class="score-message" id="scoreMessage">
+            Seleccionaste 0 de los 130 puntos disponibles en esta calculadora.
+          </p>
+
+          <div class="level-badge" id="levelBadge">Resultado pendiente</div>
+
+          <div class="progress-track" aria-label="Porcentaje del puntaje máximo">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-caption">
+            <span id="progressText">0 de 130 puntos</span>
+            <span id="remainingText">Faltan 130 puntos para el máximo</span>
+          </div>
+
+          <div class="area-summary">
+            <div class="area-card">
+              <span>Empleo y mercado laboral</span>
+              <strong><span id="employmentScore">0</span> / 70</strong>
+            </div>
+            <div class="area-card">
+              <span>Educación</span>
+              <strong><span id="educationScore">0</span> / 20</strong>
+            </div>
+            <div class="area-card">
+              <span>Idioma</span>
+              <strong><span id="languageScore">0</span> / 25</strong>
+            </div>
+            <div class="area-card">
+              <span>Regionalización</span>
+              <strong><span id="regionalScore">0</span> / 15</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="breakdown-title">Desglose detallado</h3>
+      <div class="breakdown" id="breakdown"></div>
+    </section>
+
+    <p class="footer-note">
+      Verifica siempre los criterios, requisitos y rondas de invitación directamente con fuentes oficiales antes de presentar una solicitud.
+    </p>
+  </main>
+
   <script>
-    const { jsPDF } = window.jspdf;
+    const form = document.getElementById("oinpForm");
+    const experienceSelect = document.getElementById("ontarioExperience");
+    const totalOntarioWrap = document.getElementById("totalOntarioWrap");
+    const resultBox = document.getElementById("result");
+    const totalScoreEl = document.getElementById("totalScore");
+    const breakdownEl = document.getElementById("breakdown");
 
-    function validateSelect(id) {
-      const el = document.getElementById(id);
-      if (!el.value) { el.style.borderColor = '#b00020'; return false; }
-      else { el.style.borderColor = '#bbb'; return true; }
+    function toggleOntarioExperience() {
+      const selected = experienceSelect.options[experienceSelect.selectedIndex];
+      const isLessThanSix = selected.dataset.lessSix === "true";
+      totalOntarioWrap.style.display = isLessThanSix ? "block" : "none";
     }
 
-    document.getElementById('calc').addEventListener('click', function() {
-      const fields = ['teer','occCat','wage','workPermit','tenure','earnings','clbOverall','langKnown','region'];
-      let ok = true;
-      fields.forEach(f => { if(!validateSelect(f)) ok = false; });
-      if (!ok) { alert('Por favor completa todos los campos.'); return; }
+    function pointsFrom(select) {
+      return Number(select.value) || 0;
+    }
 
-      const values = fields.map(f => Number(document.getElementById(f).value));
-      const total = values.reduce((a,b)=>a+b,0);
+    function selectedText(select) {
+      return select.options[select.selectedIndex].text;
+    }
 
-      document.getElementById('output').style.display = 'block';
-      document.getElementById('summary').innerHTML = '<strong>Puntaje total estimado: ' + total + ' puntos</strong>';
+    const MAXIMUM_SCORE = 130;
 
-      const labels = [
-        'Job offer — TEER category','Occupational category','Wage','Work permit',
-        'Job tenure','Earnings history','Language (CLB)','Official languages','Region'
+    function getCompetitivenessLevel(percentage) {
+      if (percentage >= 80) {
+        return { text: "Excelente puntuación", color: "#247a42", background: "#e6f5eb" };
+      }
+      if (percentage >= 68) {
+        return { text: "Puntuación muy alta", color: "#185f91", background: "#e6f2fb" };
+      }
+      if (percentage >= 55) {
+        return { text: "Puntuación intermedia", color: "#8a6500", background: "#fff5cf" };
+      }
+      if (percentage >= 40) {
+        return { text: "Puntuación con oportunidades de mejora", color: "#a45116", background: "#fff0e5" };
+      }
+      return { text: "Puntuación por fortalecer", color: "#9a352d", background: "#fdebea" };
+    }
+
+    function calculateScore() {
+      const ids = [
+        "teer",
+        "nocBroad",
+        "salary",
+        "ontarioExperience",
+        "canadaIncome",
+        "legalStatus",
+        "education",
+        "canadianCredentials",
+        "languageLevel",
+        "officialLanguages",
+        "region"
       ];
 
-      let html = '<tr><th>Factor</th><th>Puntos</th></tr>';
-      labels.forEach((label,i)=> html += `<tr><td>${label}</td><td>${values[i]}</td></tr>`);
-      html += `<tr><th>Total</th><th>${total}</th></tr>`;
-      document.getElementById('resultTable').innerHTML = html;
+      let total = 0;
+      const rows = [];
 
-      const timestamp = new Date();
-      const timestampStr = timestamp.toLocaleString();
+      ids.forEach(id => {
+        const select = document.getElementById(id);
+        let points = pointsFrom(select);
 
-      const pdfBtn = document.getElementById('downloadPDF');
-      pdfBtn.style.display = 'inline-block';
-      pdfBtn.onclick = () => {
-        const doc = new jsPDF();
-        doc.setFontSize(12);
-        doc.text("Resultado — OINP Foreign Worker Stream", 10, 12);
-        doc.setFontSize(10);
-        doc.text("Fecha / Hora: " + timestampStr, 10, 22);
-        doc.text("Puntaje total: " + total + " puntos", 10, 30);
-        let y = 40;
-        labels.forEach((label,i)=> {
-          const line = `${label}: ${values[i]} puntos`;
-          doc.text(line, 10, y);
-          y += 7;
-          if (y > 275) { doc.addPage(); y = 20; }
+        if (id === "ontarioExperience") {
+          const selected = select.options[select.selectedIndex];
+          if (selected.dataset.lessSix === "true") {
+            const totalOntario = document.getElementById("totalOntario");
+            points = pointsFrom(totalOntario);
+            rows.push({
+              label: "Experiencia laboral en Ontario",
+              text: selectedText(totalOntario),
+              points
+            });
+            total += points;
+            return;
+          }
+        }
+
+        rows.push({
+          label: select.dataset.label,
+          text: selectedText(select),
+          points
         });
-        doc.save("oinp_resultado.pdf");
-      };
+        total += points;
+      });
+
+      const employment =
+        pointsFrom(document.getElementById("teer")) +
+        pointsFrom(document.getElementById("nocBroad")) +
+        pointsFrom(document.getElementById("salary")) +
+        (document.getElementById("ontarioExperience").options[
+          document.getElementById("ontarioExperience").selectedIndex
+        ].dataset.lessSix === "true"
+          ? pointsFrom(document.getElementById("totalOntario"))
+          : pointsFrom(document.getElementById("ontarioExperience"))) +
+        pointsFrom(document.getElementById("canadaIncome")) +
+        pointsFrom(document.getElementById("legalStatus"));
+
+      const educationTotal =
+        pointsFrom(document.getElementById("education")) +
+        pointsFrom(document.getElementById("canadianCredentials"));
+
+      const languageTotal =
+        pointsFrom(document.getElementById("languageLevel")) +
+        pointsFrom(document.getElementById("officialLanguages"));
+
+      const regionalTotal = pointsFrom(document.getElementById("region"));
+      const percentage = Math.min((total / MAXIMUM_SCORE) * 100, 100);
+      const remaining = Math.max(MAXIMUM_SCORE - total, 0);
+      const level = getCompetitivenessLevel(percentage);
+
+      totalScoreEl.textContent = total;
+      document.getElementById("maximumScore").textContent = MAXIMUM_SCORE;
+      document.getElementById("scorePercentage").textContent = `${percentage.toFixed(1)}%`;
+      document.getElementById("scoreMessage").textContent =
+        `Conseguiste ${total} de un máximo de ${MAXIMUM_SCORE} puntos, equivalente al ${percentage.toFixed(1)}%.`;
+      document.getElementById("progressText").textContent =
+        `${total} de ${MAXIMUM_SCORE} puntos`;
+      document.getElementById("remainingText").textContent =
+        remaining === 0
+          ? "Alcanzaste el puntaje máximo"
+          : `Te faltan ${remaining} puntos para el máximo`;
+
+      document.getElementById("employmentScore").textContent = employment;
+      document.getElementById("educationScore").textContent = educationTotal;
+      document.getElementById("languageScore").textContent = languageTotal;
+      document.getElementById("regionalScore").textContent = regionalTotal;
+
+      const donut = document.getElementById("scoreDonut");
+      donut.style.setProperty("--progress", `${percentage * 3.6}deg`);
+      donut.style.setProperty("--score-color", level.color);
+
+      const progressFill = document.getElementById("progressFill");
+      progressFill.style.width = `${percentage}%`;
+      progressFill.style.background = level.color;
+
+      const levelBadge = document.getElementById("levelBadge");
+      levelBadge.textContent = level.text;
+      levelBadge.style.color = level.color;
+      levelBadge.style.background = level.background;
+
+      breakdownEl.innerHTML = rows.map(row => `
+        <div class="breakdown-row">
+          <div>
+            <strong>${row.label}</strong><br>
+            <small>${row.text}</small>
+          </div>
+          <strong>${row.points} pts</strong>
+        </div>
+      `).join("");
+
+      resultBox.style.display = "block";
+      resultBox.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    experienceSelect.addEventListener("change", toggleOntarioExperience);
+    document.getElementById("calculateBtn").addEventListener("click", calculateScore);
+
+    form.addEventListener("reset", () => {
+      setTimeout(() => {
+        toggleOntarioExperience();
+        resultBox.style.display = "none";
+        breakdownEl.innerHTML = "";
+        totalScoreEl.textContent = "0";
+        document.getElementById("scorePercentage").textContent = "0%";
+        document.getElementById("progressFill").style.width = "0";
+        document.getElementById("scoreDonut").style.setProperty("--progress", "0deg");
+      }, 0);
     });
 
-    document.getElementById('reset').addEventListener('click', function() {
-      document.querySelectorAll('select').forEach(s => { s.value = ''; s.style.borderColor='#bbb'; });
-      document.getElementById('output').style.display = 'none';
-      document.getElementById('downloadPDF').style.display = 'none';
-      document.getElementById('resultTable').innerHTML = '';
-      document.getElementById('summary').innerHTML = '';
-    });
+    toggleOntarioExperience();
   </script>
 </body>
 </html>
